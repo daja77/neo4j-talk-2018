@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Exploring Graph Data with Neo4j</title>
+
+		<meta name="description" content="How to model, query and integrate graph data into our day to day applications">
+		<meta name="author" content="Daniel Jahre">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown>
+					<textarea data-template>
+						# Exploring Graph Data with Neo4j
+						### Java Vienna Meetup April 2018
+					 </textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						### Bio
+						- Daniel Jahre (* 1977)
+						- Linux and Open Source User since 1997
+						- Software Developer in Vienna
+						- Part of the ***Linuxwochen*** Organizing since 2008
+						- Joined ***Java Vienna*** in 2014
+					</textarea>
+				</section>
+
+				<section data-markdown>
+						<textarea data-template>
+								### Agenda
+								- Why modelling Data as Graphs?
+								- Neo4j
+								- Cypher Query Language
+								- Exploring Pet Clinic Example from Spring
+								- Integrate everything into Spring Boot
+						</textarea>
+				</section>
+
+				<section data-markdown>
+						<textarea data-template>
+							# Why
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Why?
+							- Graphs are everywhere
+							- We draw relations all the time
+							- We have all sorts of diagrams
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Joe's Network
+							![Joe's Network](joes_network.png)
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Real World Examples
+							- Facebook, Twitter, all social media
+							- Routing problems
+							- Recommendation Engines (e.g. Amazon)
+							- [Analyzing the Panama Paper Leak (dzone)](https://dzone.com/articles/analyzing-the-panama-papers-with-Neo4j-data-models)
+							- [The Story behind Russian Twitter Trolls](https://neo4j.com/blog/story-behind-russian-twitter-trolls/)
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							 ### Basics
+							 - A Graph is a ***set of vertices and edges***
+							 - We use a directed property Graph
+							 - We call vertices ***nodes*** and edges ***relations***
+							 - We put ***labels*** on nodes to identify special kind of nodes
+						</textarea>
+				</section>
+
+
+				<section data-markdown>
+						<textarea data-template>
+							# Neo4j
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+								### Neo4j
+								- built in 2007 on top of ***MySQL***
+								- rebuilt now with own backend to handle the graph models better
+								- index-free adjacency (traveling neighbouring nodes is cheap)
+								- ACID
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Neo4j Licensing
+							- Community Edition
+								* GPLv3
+							- Enterprise Edition
+								* AGPL or Commercial Licensing
+								* Features clustering and load balancing etc.
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Neo4j Installing
+							- Packages for various platforms including instructions
+							- Docker images
+							- Cloud deployments
+							- Neo4j sandbox (expires after 7 days)
+						</textarea>
+				</section>
+
+				<section data-markdown>
+						<textarea data-template>
+							# CYPHER
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER
+							- Query Language developed for ***Neo4j***
+							- Optimized to be human readable
+							- Looks a bit like ascii art
+							- ***openCYPHER*** project to open the Language to other databases
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER - Adding data
+							- ***CREATE***
+								* to create ***nodes*** and ***relations***
+							- ***MERGE***
+								* adds new ***nodes*** and ***relations*** if they not are already existing
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER adding Joe and John
+							 ```CYPHER
+							 CREATE (joe:PERSON {firstname: "Joe", age: 42})
+							 CREATE (john:PERSON {firstname: "John", age: 32})
+							 CREATE (joe)-[:FRIEND_OF]->(john)
+							 CREATE (joe)-[:COLLEAGE_OF]->(john)
+							 ```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER - Query data
+							- ***MATCH***
+							- ***WHERE*** (optional)
+							- ***RETURN***
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER querying Joe
+							 ```CYPHER
+							MATCH (joe:PERSON)
+							WHERE joe.firstname = "Joe"
+							RETURN joe
+							 ```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER querying Joe's friends
+							 ```CYPHER
+							MATCH (joe:PERSON)
+							WHERE joe.firstname = "Joe"
+							WITH joe
+							MATCH (joe)-[:FRIEND_OF]->(fJoe:PERSON)
+							RETURN fJoe, joe
+							 ```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER querying John's friends
+							- by ignoring the direction of the relation
+							 ```CYPHER
+							MATCH (john:PERSON)
+							WHERE john.firstname = "John"
+							WITH john
+							MATCH (john)-[:FRIEND_OF]-(fJohn:PERSON)
+							RETURN fJohn
+							 ```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### CYPHER shorting last query
+							 ```CYPHER
+							MATCH(john:PERSON {firstname: "John"})-[:FRIEND_OF]-()
+							RETURN *
+							 ```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Learning CYPHER
+							![Graph Databases book](graph_databases.png)
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Learning CYPHER
+							- [Neo4j Website](https://Neo4j.com/docs/)
+							- [CYPHER Refcard](https://Neo4j.com/docs/cypher-refcard/current/)
+							- Learning Neo4j 3.x by Jérôme Baton (Pakt)
+							- YouTube presentations
+						</textarea>
+				</section>
+
+				<section data-markdown>
+						<textarea data-template>
+							# PetClinic
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic
+							- well known example for Spring
+							- uses relational databases
+							- We will port that model to Neo4j
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic relational model
+							![PetClinic relational model](petclinic_relational.png)
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic Listing Vets with Professions
+							```SQL
+							SELECT v.FIRST_NAME, v.LAST_NAME, s.NAME
+							from VETS v, SPECIALTIES s, VET_SPECIALTIES vs
+							WHERE s.ID = vs.SPECIALTY_ID and v.ID = vs.VET_ID
+							and s.NAME = 'surgery';
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic Vet Result
+							![Vet Results](result_sql_surgery.png)
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic Insert Vets with CYPHER
+							```CYPHER
+							CREATE(linda:Vet:Surgeon:Dentist {firstname: "Linda",
+							lastname: "Douglas"})
+							CREATE(raf:Vet:Surgeon {firstname: "Rafael",
+							lastname: "Ortega"})
+
+							CREATE(helen:Vet:Radiologist {firstname: "Helen",
+							lastname: "Leary"})
+							CREATE(henry:Vet:Radiologist {firstname: "Henry",
+							lastname: "Stevens"})
+
+							CREATE(sharon:Vet {firstname: "Sharon", lastname: "Jenkins"})
+							CREATE(james:Vet {firstname: "James", lastname: "Carter"})
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic List all Surgeons again
+							```CYPHER
+							MATCH (n:Surgeon)
+							RETURN n;
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+								# Thank you!
+						</textarea>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+			controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'none', // none/fade/slide/convex/concave/zoom
+
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+			Reveal.configure(
+					{ slideNumber: true}
+			)
+		</script>
+	</body>
+</html>
