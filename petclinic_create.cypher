@@ -93,7 +93,7 @@ CREATE(carlos:Person {firstname: "Carlos", lastname: "Estaban",
 CREATE((carlos)-[:LIVES_IN]->(waun))
 
 //Ownership relations
-CREATE((george)-[:OWNS]->(leo))
+CREATE((franklin)-[:OWNS]->(leo))
 CREATE((betty)-[:OWNS]->(basil))
 CREATE((ed)-[:OWNS]->(rosy))
 CREATE((ed)-[:OWNS]->(jewel))

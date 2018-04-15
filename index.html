@@ -29,17 +29,18 @@
 			<div class="slides">
 				<section data-markdown>
 					<textarea data-template>
-						# Exploring Graph Data with Neo4j
+						## Exploring Graph Data with Neo4j and Spring Boot
 						### Java Vienna Meetup April 2018
 					 </textarea>
 				</section>
 				<section data-markdown>
 					<textarea data-template>
 						### Bio
+						![daja pic](daja.jpg) <!-- .element height="107px" width="124px" -->
 						- Daniel Jahre (* 1977)
 						- Linux and Open Source User since 1997
 						- Software Developer in Vienna
-						- Part of the ***Linuxwochen*** Organizing since 2008
+						- Part of ***Linuxwochen*** Organizing Team since 2008
 						- Joined ***Java Vienna*** in 2014
 					</textarea>
 				</section>
@@ -57,7 +58,24 @@
 
 				<section data-markdown>
 						<textarea data-template>
-							# Why
+							# Why?
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							![whiteboard](whiteboard1.jpg) <!-- .element height="50%" width="50%" -->
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							![whiteboard clipart](Tableau-blanc-300px.png)
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							![network graph](Network-Management-Model.svg)
+
 						</textarea>
 				</section>
 				<section data-markdown>
@@ -99,7 +117,7 @@
 
 				<section data-markdown>
 						<textarea data-template>
-							# Neo4j
+							![Neo4j Logo](neo4j_logo.png)
 						</textarea>
 				</section>
 				<section data-markdown>
@@ -113,7 +131,7 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### Neo4j Licensing
+							### Neo4j - Licensing
 							- Community Edition
 								* GPLv3
 							- Enterprise Edition
@@ -123,11 +141,17 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### Neo4j Installing
+							### Neo4j - Installing
 							- Packages for various platforms including instructions
 							- Docker images
 							- Cloud deployments
-							- Neo4j sandbox (expires after 7 days)
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Trying it out online
+							- Neo4j Sandboxes https://neo4j.com/sandbox-v2/
+							- Small Cloud Hosting for free https://www.graphenedb.com/pricing.html
 						</textarea>
 				</section>
 
@@ -147,6 +171,14 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
+							### CYPHER -  Nodes, Relations and Connections
+							- (node)
+							- [:relation]
+							- (node1)-[:related_to]->(node2)
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
 							### CYPHER - Adding data
 							- ***CREATE***
 								* to create ***nodes*** and ***relations***
@@ -156,12 +188,12 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### CYPHER adding Joe and John
+							### CYPHER - adding Joe and John
 							 ```CYPHER
 							 CREATE (joe:PERSON {firstname: "Joe", age: 42})
 							 CREATE (john:PERSON {firstname: "John", age: 32})
 							 CREATE (joe)-[:FRIEND_OF]->(john)
-							 CREATE (joe)-[:COLLEAGE_OF]->(john)
+							 CREATE (joe)-[:COLLEAGUE_OF]->(john)
 							 ```
 						</textarea>
 				</section>
@@ -175,7 +207,7 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### CYPHER querying Joe
+							### CYPHER - querying Joe
 							 ```CYPHER
 							MATCH (joe:PERSON)
 							WHERE joe.firstname = "Joe"
@@ -185,7 +217,7 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### CYPHER querying Joe's friends
+							### CYPHER - querying Joe's friends
 							 ```CYPHER
 							MATCH (joe:PERSON)
 							WHERE joe.firstname = "Joe"
@@ -197,7 +229,7 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### CYPHER querying John's friends
+							### CYPHER - querying John's friends
 							- by ignoring the direction of the relation
 							 ```CYPHER
 							MATCH (john:PERSON)
@@ -210,7 +242,7 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### CYPHER shorting last query
+							### CYPHER - shorting last query
 							 ```CYPHER
 							MATCH(john:PERSON {firstname: "John"})-[:FRIEND_OF]-()
 							RETURN *
@@ -237,6 +269,7 @@
 				<section data-markdown>
 						<textarea data-template>
 							# PetClinic
+							![blue cat](Blue-Cat-300px.png) <!-- .element style="border: none; background: #111111" -->
 						</textarea>
 				</section>
 				<section data-markdown>
@@ -249,14 +282,14 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### PetClinic relational model
+							### PetClinic - relational model
 							![PetClinic relational model](petclinic_relational.png)
 
 						</textarea>
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### PetClinic Listing Vets with Professions
+							### PetClinic - Listing Vets with Professions
 							```SQL
 							SELECT v.FIRST_NAME, v.LAST_NAME, s.NAME
 							from VETS v, SPECIALTIES s, VET_SPECIALTIES vs
@@ -267,13 +300,13 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### PetClinic Vet Result
+							### PetClinic - Vet Result
 							![Vet Results](result_sql_surgery.png)
 						</textarea>
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### PetClinic Insert Vets with CYPHER
+							### PetClinic - Insert Vets with CYPHER
 							```CYPHER
 							CREATE(linda:Vet:Surgeon:Dentist {firstname: "Linda",
 							lastname: "Douglas"})
@@ -292,7 +325,7 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
-							### PetClinic List all Surgeons again
+							### PetClinic - List all Surgeons again
 							```CYPHER
 							MATCH (n:Surgeon)
 							RETURN n;
@@ -301,7 +334,307 @@
 				</section>
 				<section data-markdown>
 						<textarea data-template>
+							### Small Changes to the model
+							- renamed Owners to Person
+							- Created Cities as extra nodes instead of a property of Person
+							- added MEDICATED_ON relation between Vets and Visits
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic - A marketing question
+							- salesman calling
+							- they invented a new dog food
+							- they want to know in which area the most dogs live, so that they
+							start their campaign there
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### PetClinic - Query to get that answer
+							```
+							MATCH (c:City)-[*2]-(d:Dog) RETURN c, count(d) as count
+							ORDER BY count DESC
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							# Neo4j and Spring Boot
 
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Basics
+							- Neo4j OGM (Object Graph Mapper)
+							- Spring Data on top of it
+							- Spring Boot and the Spring Boot Starter for Neo4j
+
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### The pom file
+							```
+							<dependency>
+								<groupId>org.springframework.boot</groupId>
+								<artifactId>spring-boot-starter-data-neo4j</artifactId>
+							</dependency>
+							<dependency>
+								<groupId>org.springframework.data</groupId>
+								<artifactId>spring-data-neo4j</artifactId>
+							</dependency>
+							<dependency>
+							  <groupId>org.neo4j</groupId>
+							  <artifactId>neo4j-ogm</artifactId>
+							</dependency>
+								```
+							</fieldset>
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### The configuration
+							```
+							@Configuration
+@EnableTransactionManagement
+@ComponentScan("org.springframework.samples.petclinic")
+@EnableNeo4jRepositories("org.springframework.samples.petclinic.repository")
+public class PersistenceContext {
+
+  @Bean
+  public SessionFactory getSessionFactory() {
+    return new SessionFactory(configuration(),
+		"org.springframework.samples.petclinic.model");
+  }
+
+  @Bean
+  public Neo4jTransactionManager transactionManager()
+	   throws Exception {
+    return new Neo4jTransactionManager(getSessionFactory());
+  }
+
+	@Bean
+	public org.neo4j.ogm.config.Configuration configuration() {
+		ConfigurationSource properties = new ClasspathConfigurationSource("db.properties");
+		return new org.neo4j.ogm.config.Configuration.Builder(properties).build();
+	}
+}
+
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Entity types
+							- Node Entities
+							- Relationship Entities (only needed
+							for rich relationships)
+							- PetClinic example only uses Node Entities
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### BaseEntity
+							```
+							public class BaseEntity {
+    @Id @GeneratedValue protected Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+}
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Vet Entity
+							```
+							@NodeEntity
+public class Vet extends BaseEntity{
+
+    @Labels
+    private List<String> labels = new ArrayList<>();
+
+    @Property(name = "firstname")
+    private String firstName;
+    @Property(name = "lastname")
+    private String lastName;
+		...
+
+		public String getSpecialties() {
+	 return StringUtils.join(labels, ", ");
+}
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Person Entity
+							```
+							@NodeEntity
+public class Person extends BaseEntity{
+
+    @Property(name = "firstname")
+    String firstName;
+    @Property(name = "lastname")
+    String lastName;
+    String address;
+    String telephone;
+
+    @Relationship(type="OWNS")
+    Set<Pet> pets = new HashSet<>();
+
+    @Relationship(type="LIVES_IN")
+    City city;
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Pet Entity
+							```
+							@NodeEntity
+public class Pet extends BaseEntity {
+
+    @JsonIgnore
+    @Labels
+    List<String> labels = new ArrayList<>();
+
+    String name;
+
+    @Property(name = "birthdate")
+    LocalDate birthDate;
+
+    @JsonIgnore
+    @Relationship(type="OWNS",
+		direction = Relationship.INCOMING)
+    private Person owner;
+
+    @Relationship(type = "WAS_ON")
+    private Set<Visit> visits = new HashSet<>();
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Example Relationship Entity
+							```
+							@RelationshipEntity(type="PLAYED_IN")
+public class Role {
+    @Id @GeneratedValue   private Long relationshipId;
+    @Property  private String title;
+    @StartNode private Actor actor;
+    @EndNode   private Movie movie;
+}
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### City Repository
+							```
+							public interface CityRepository extends
+							  Neo4jRepository<City, Long> {
+
+							    City findByName(String name);
+							}
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Pet Repository
+							```
+							public interface PetRepository extends
+							   Neo4jRepository<Pet, Long> {
+							    /**
+							     * Retrieve all Pet types from the data store.
+							     * @return a Collection of pet types.
+							     */
+							    @Query("MATCH (n:Pet) return distinct labels(n)")
+							    List<Collection<String>> getPetTypes();
+
+							    Pet findById(long id);
+							    Pet save(Pet pet);
+							}
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### ClinicService
+							```
+public Collection<PetType> getPetTypes()
+	throws DataAccessException {
+  HashMap<String, PetType> petTypes = new HashMap();
+  for (Collection<String> c : petRepository.getPetTypes()) {
+    for (String entry : c) {
+      if("BaseEntity".equals(entry) || "Pet".equals(entry)) {
+        continue;
+      }
+      petTypes.put(entry, new PetType(entry));
+    }
+	 }
+	 return petTypes.values();
+ }
+							```
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							# Demo
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### There is more (APOC)
+							- A Package Of Components
+							- Awesome Procedures On Cypher
+							- Can be called from CYPHER queries
+							- e.g. PageRank, Dijkstra, etc.
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### There is more (GraphQL)
+							- Query language for the API
+							- database agnostic
+							- used by Facebook, GitHub, Pinterest and others
+							- can be combined with REST
+							- http://graphql.org/
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### How to convince your managers?
+
+							![manager](maninoffice-dictate-300px-2.png)
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### How to convince your managers?
+							- import data from csv or existing data source into Neo4j
+							- try to adopt the model to your questions
+							- integrate it into a spring boot application if that is your
+							platform of choice
+							- commercial support is available
+							- you do not lose anything, but you can gain new insights
+						</textarea>
+				</section>
+				<section data-markdown>
+						<textarea data-template>
+							### Links
+							- https://github.com/daja77/spring-petclinic-angularjs
+							- https://github.com/daja77/neo4j-talk-2018
+							- https://neo4j.com/developer/graph-db-vs-rdbms/
 						</textarea>
 				</section>
 				<section data-markdown>
